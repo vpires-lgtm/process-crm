@@ -2626,20 +2626,10 @@ async function nlUploadToCloudinary(file) {
         else reject(new Error('Upload failed: ' + xhr.status));
       };
       xhr.onerror = () => reject(new Error('Network error'));
-      // Déterminer le bon endpoint selon le type de fichier
-    const isVideo = file.type.startsWith('video/');
-    const isImage = file.type.startsWith('image/');
-    
-    let resourceEndpoint = 'image';
-    if (isVideo) resourceEndpoint = 'video';
-    else if (!isImage) resourceEndpoint = 'raw';
-
-    // Pour les raw (PDF etc), ajouter resource_type dans le formData
-    if (resourceEndpoint === 'raw') {
-      formData.append('resource_type', 'raw');
-    }
-    
-    xhr.open('POST', `https://api.cloudinary.com/v1_1/${NL_CLOUD_NAME}/${resourceEndpoint}/upload`);
+      const isVideo = file.type.startsWith('video/');
+      const isImage = file.type.startsWith('image/');
+      const endpoint = isVideo ? 'video' : isImage ? 'image' : 'raw';
+      xhr.open('POST', `https://api.cloudinary.com/v1_1/${NL_CLOUD_NAME}/${endpoint}/upload`);
       xhr.send(formData);
     });
 
