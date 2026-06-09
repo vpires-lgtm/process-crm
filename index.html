@@ -2629,7 +2629,16 @@ async function nlUploadToCloudinary(file) {
       // Déterminer le bon endpoint selon le type de fichier
     const isVideo = file.type.startsWith('video/');
     const isImage = file.type.startsWith('image/');
-    const resourceEndpoint = isVideo ? 'video' : isImage ? 'image' : 'raw';
+    
+    let resourceEndpoint = 'image';
+    if (isVideo) resourceEndpoint = 'video';
+    else if (!isImage) resourceEndpoint = 'raw';
+
+    // Pour les raw (PDF etc), ajouter resource_type dans le formData
+    if (resourceEndpoint === 'raw') {
+      formData.append('resource_type', 'raw');
+    }
+    
     xhr.open('POST', `https://api.cloudinary.com/v1_1/${NL_CLOUD_NAME}/${resourceEndpoint}/upload`);
       xhr.send(formData);
     });
