@@ -913,6 +913,276 @@
       font-family: inherit; margin-left: 8px;
     }
     .nl-remove-file:hover { background: #FEF2F2; }
+    /* ══ SUIVI RECOUVREMENT ══ */
+    .rec-lock {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      z-index: 10;
+    }
+    .rec-lock-card {
+      background: #1E293B; border-radius: 24px;
+      padding: 2.5rem 2rem; max-width: 340px; width: 90%;
+      text-align: center; border: 1px solid #334155;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+    }
+    .rec-lock-icon {
+      width: 72px; height: 72px; border-radius: 20px;
+      background: linear-gradient(135deg, #E11D48, #BE123C);
+      margin: 0 auto 1.2rem;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 24px rgba(225,29,72,0.35);
+    }
+    .rec-lock-icon i { font-size: 30px; color: #fff; }
+    .rec-lock-card h2 { font-size: 20px; font-weight: 800; color: #F1F5F9; margin-bottom: 6px; }
+    .rec-lock-card p { font-size: 13px; color: #64748B; margin-bottom: 24px; }
+    .rec-code-inputs { display: flex; gap: 12px; justify-content: center; }
+    .rec-digit {
+      width: 56px; height: 60px; border-radius: 14px;
+      border: 2px solid #334155; background: #0F172A;
+      font-size: 24px; font-weight: 800; text-align: center;
+      color: #F1F5F9; outline: none; transition: border-color 0.15s;
+      font-family: inherit;
+    }
+    .rec-digit:focus { border-color: #E11D48; }
+    .rec-digit.error { border-color: #EF4444; animation: shake 0.3s ease; }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+    /* MAIN */
+    .rec-wrap { max-width: 100%; padding: 24px 28px; }
+    .rec-header-card {
+      background: #fff; border: 1px solid #E2E8F0;
+      border-radius: 16px; padding: 20px; margin-bottom: 20px;
+    }
+    .rec-btn-new {
+      height: 38px; padding: 0 16px;
+      background: #E11D48; color: #fff; border: none;
+      border-radius: 10px; font-size: 13px; font-weight: 600;
+      cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+      transition: background 0.15s; font-family: inherit; white-space: nowrap;
+    }
+    .rec-btn-new:hover { background: #BE123C; }
+    /* PROJECT CARDS */
+    .rec-projects-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+    }
+    .rec-project-card {
+      background: #fff; border: 1px solid #E2E8F0;
+      border-radius: 16px; overflow: hidden;
+      transition: box-shadow 0.15s, border-color 0.15s;
+      display: flex; flex-direction: column;
+    }
+    .rec-project-card:hover { border-color: #FDA4AF; box-shadow: 0 4px 20px rgba(225,29,72,0.08); }
+    .rec-project-top {
+      padding: 16px 18px 12px;
+      border-bottom: 1px solid #F1F5F9;
+    }
+    .rec-project-name { font-size: 15px; font-weight: 700; color: #0F172A; margin-bottom: 4px; }
+    .rec-project-date { font-size: 11px; color: #94A3B8; }
+    .rec-project-actions { display: flex; gap: 6px; }
+    .rec-action-btn {
+      width: 30px; height: 30px; border-radius: 8px;
+      border: 1px solid #E2E8F0; background: #F8FAFC;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #64748B; font-size: 13px;
+      transition: all 0.12s;
+    }
+    .rec-action-btn:hover { background: #F1F5F9; }
+    .rec-action-btn.delete:hover { background: #FEF2F2; border-color: #FCA5A5; color: #EF4444; }
+    .rec-project-body { padding: 14px 18px; flex: 1; }
+    .rec-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 11px; font-weight: 600; padding: 3px 9px;
+      border-radius: 99px; margin-bottom: 8px;
+    }
+    .rec-tag.declencheur { background: #FEF3C7; color: #92400E; }
+    .rec-notes-text { font-size: 12px; color: #64748B; line-height: 1.5; margin-bottom: 10px; }
+    .rec-com-count {
+      font-size: 12px; color: #6366F1; font-weight: 600;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .rec-btn-view-map {
+      width: 100%; height: 36px;
+      background: #F8FAFC; border: none; border-top: 1px solid #F1F5F9;
+      color: #E11D48; font-size: 13px; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      gap: 6px; font-family: inherit; transition: background 0.12s;
+    }
+    .rec-btn-view-map:hover { background: #FFF1F2; }
+    /* EMPTY */
+    .rec-empty {
+      text-align: center; color: #94A3B8; font-size: 14px;
+      padding: 3rem; background: #fff; border: 1px dashed #CBD5E1;
+      border-radius: 14px;
+    }
+    /* ── CARTOGRAPHIE ── */
+    .rec-carto-overlay {
+      position: fixed; inset: 0; z-index: 450;
+      background: #0F172A;
+      display: flex; flex-direction: column;
+    }
+    .rec-carto-topbar {
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px 24px; border-bottom: 1px solid #1E293B;
+      flex-shrink: 0;
+    }
+    .rec-carto-title { font-size: 16px; font-weight: 700; color: #F1F5F9; flex: 1; }
+    .rec-carto-close {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: #1E293B; border: 1px solid #334155;
+      color: #94A3B8; cursor: pointer; font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.12s;
+    }
+    .rec-carto-close:hover { background: #334155; color: #F1F5F9; }
+    .rec-carto-canvas {
+      flex: 1; overflow: auto; padding: 40px;
+      display: flex; align-items: flex-start; justify-content: center;
+    }
+    /* Nodes */
+    .rec-node {
+      background: #1E293B; border: 2px solid #334155;
+      border-radius: 14px; padding: 14px 18px;
+      min-width: 200px; max-width: 260px;
+      position: relative; cursor: default;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .rec-node:hover { border-color: #E11D48; box-shadow: 0 0 0 3px rgba(225,29,72,0.15); }
+    .rec-node.trigger-node {
+      border-color: #F59E0B; background: #1C1917;
+    }
+    .rec-node-badge {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; padding: 2px 8px; border-radius: 99px;
+      margin-bottom: 8px; display: inline-block;
+    }
+    .rec-node-badge.trigger { background: #FEF3C7; color: #92400E; }
+    .rec-node-badge.com { background: #EEF2FF; color: #4338CA; }
+    .rec-node-title { font-size: 13px; font-weight: 700; color: #F1F5F9; margin-bottom: 4px; }
+    .rec-node-desc { font-size: 11px; color: #64748B; line-height: 1.4; }
+    .rec-node-link {
+      font-size: 11px; color: #6366F1; margin-top: 6px;
+      display: flex; align-items: center; gap: 3px;
+      text-decoration: none;
+    }
+    .rec-node-link:hover { text-decoration: underline; }
+    /* SVG arrows */
+    .rec-carto-svg { position: absolute; top: 0; left: 0; pointer-events: none; overflow: visible; }
+    .rec-arrow-label {
+      font-size: 10px; fill: #7C3AED; font-weight: 600;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    /* MODALS */
+    .rec-modal-overlay {
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(15,23,42,0.7); backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .rec-modal-card {
+      background: #fff; border-radius: 20px;
+      padding: 24px; width: 90%; max-width: 520px;
+      max-height: 88vh; overflow-y: auto;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+      animation: completion-pop 0.3s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    }
+    .rec-modal-card.wide { max-width: 680px; }
+    .rec-field { margin-bottom: 14px; }
+    .rec-field label {
+      display: block; font-size: 12px; font-weight: 600; color: #475569;
+      text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;
+    }
+    .rec-field input, .rec-field textarea, .rec-field select {
+      width: 100%; padding: 10px 14px;
+      border: 1px solid #E2E8F0; border-radius: 10px;
+      font-size: 14px; color: #0F172A; background: #F8FAFC;
+      font-family: inherit; outline: none; resize: vertical;
+      transition: border-color 0.15s;
+    }
+    .rec-field input:focus, .rec-field textarea:focus, .rec-field select:focus {
+      border-color: #E11D48; background: #fff;
+    }
+    .rec-step-indicator {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 20px;
+    }
+    .rec-step-dot {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
+    }
+    .rec-step-dot.active { background: #E11D48; color: #fff; }
+    .rec-step-dot.done { background: #DCFCE7; color: #16A34A; }
+    .rec-step-dot.inactive { background: #F1F5F9; color: #94A3B8; }
+    .rec-step-line { flex: 1; height: 2px; background: #E2E8F0; }
+    .rec-step-line.done { background: #BBF7D0; }
+    .rec-com-item {
+      background: #F8FAFC; border: 1px solid #E2E8F0;
+      border-radius: 12px; padding: 14px; margin-bottom: 8px;
+    }
+    .rec-com-item-header {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+    }
+    .rec-com-num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: #E11D48; color: #fff;
+      font-size: 11px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .rec-com-item-title { font-size: 13px; font-weight: 700; color: #0F172A; flex: 1; }
+    .rec-btn-del-com {
+      background: none; border: none; cursor: pointer;
+      color: #94A3B8; font-size: 16px; padding: 2px;
+      transition: color 0.12s;
+    }
+    .rec-btn-del-com:hover { color: #EF4444; }
+    .rec-btn-add-com {
+      width: 100%; height: 38px;
+      background: #FFF1F2; border: 1px dashed #FECDD3;
+      border-radius: 10px; color: #E11D48; font-size: 13px; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      gap: 6px; font-family: inherit; transition: background 0.12s; margin-top: 4px;
+    }
+    .rec-btn-add-com:hover { background: #FFE4E6; }
+    .rec-link-toggle {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 12px; background: #EEF2FF; border-radius: 8px;
+      margin-top: 8px; cursor: pointer; font-size: 12px; color: #4338CA; font-weight: 600;
+    }
+    .rec-link-toggle input[type=checkbox] { accent-color: #6366F1; width: 14px; height: 14px; }
+    .rec-com-link-section {
+      margin-top: 8px; padding: 10px; background: #F5F3FF;
+      border-radius: 8px; border: 1px solid #DDD6FE;
+    }
+    .rec-btn-cancel {
+      height: 38px; padding: 0 16px;
+      background: #F1F5F9; color: #64748B; border: none;
+      border-radius: 10px; font-size: 14px; font-weight: 600;
+      cursor: pointer; font-family: inherit; transition: background 0.12s;
+    }
+    .rec-btn-cancel:hover { background: #E2E8F0; }
+    .rec-btn-save {
+      height: 38px; padding: 0 20px;
+      background: #E11D48; color: #fff; border: none;
+      border-radius: 10px; font-size: 14px; font-weight: 600;
+      cursor: pointer; font-family: inherit;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: background 0.15s;
+    }
+    .rec-btn-save:hover { background: #BE123C; }
+    .rec-btn-next {
+      height: 38px; padding: 0 20px;
+      background: #E11D48; color: #fff; border: none;
+      border-radius: 10px; font-size: 14px; font-weight: 600;
+      cursor: pointer; font-family: inherit;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: background 0.15s;
+    }
+    .rec-btn-next:hover { background: #BE123C; }
+    #page-recouvrement { position: relative; overflow: hidden; }
+
   </style>
 </head>
 <body>
@@ -1024,6 +1294,11 @@
       Process HTML Salesforce
     </div>
 
+    <div class="nav-item" id="nav-recouvrement" onclick="navigateRecouvrement()">
+      <i class="ti ti-shield-lock"></i>
+      Suivi Recouvrement
+    </div>
+
     <div class="nav-item" id="nav-newsletter" onclick="navigate('newsletter')" style="display:none">
       <i class="ti ti-send"></i>
       Newsletter Équipe
@@ -1071,6 +1346,14 @@
             <h3>Process HTML Salesforce</h3>
             <p>Guide complet pour modifier du code HTML email : texte, liens, images, tracking.</p>
             <div class="card-arrow" style="color:#0EA5E9">Ouvrir <i class="ti ti-arrow-right" style="font-size:13px"></i></div>
+          </div>
+          <div class="tool-card" onclick="navigateRecouvrement()">
+            <div class="tool-card-icon" style="background:#FFF1F2">
+              <i class="ti ti-shield-lock" style="color:#E11D48;font-size:22px"></i>
+            </div>
+            <h3>Suivi Recouvrement</h3>
+            <p>Gère tes projets de com recouvrement : déclencheurs, enchaînements, conditions et liens.</p>
+            <div class="card-arrow" style="color:#E11D48">Ouvrir <i class="ti ti-arrow-right" style="font-size:13px"></i></div>
           </div>
           <div class="tool-card" onclick="navigate('newsletter')" style="display:none">
             <div class="tool-card-icon" style="background:#FEF3C7">
@@ -1308,6 +1591,124 @@
       </div>
     </div>
 
+    <!-- PAGE SUIVI RECOUVREMENT -->
+    <div class="page" id="page-recouvrement">
+
+      <!-- LOCK SCREEN -->
+      <div id="rec-lock-screen" class="rec-lock">
+        <div class="rec-lock-card">
+          <div class="rec-lock-icon"><i class="ti ti-shield-lock"></i></div>
+          <h2>Suivi Recouvrement</h2>
+          <p>Accès restreint — entre le code pour continuer</p>
+          <div class="rec-code-inputs">
+            <input type="password" maxlength="1" class="rec-digit" id="rd0" oninput="recDigit(0)" onkeydown="recKey(event,0)" />
+            <input type="password" maxlength="1" class="rec-digit" id="rd1" oninput="recDigit(1)" onkeydown="recKey(event,1)" />
+            <input type="password" maxlength="1" class="rec-digit" id="rd2" oninput="recDigit(2)" onkeydown="recKey(event,2)" />
+            <input type="password" maxlength="1" class="rec-digit" id="rd3" oninput="recDigit(3)" onkeydown="recKey(event,3)" />
+          </div>
+          <div id="rec-code-error" style="color:#FDA4AF;font-size:13px;margin-top:10px;display:none">Code incorrect ❌</div>
+        </div>
+      </div>
+
+      <!-- CARTOGRAPHIE OVERLAY -->
+      <div id="rec-carto-overlay" class="rec-carto-overlay" style="display:none">
+        <div class="rec-carto-topbar">
+          <div style="width:36px;height:36px;background:#1E293B;border-radius:10px;display:flex;align-items:center;justify-content:center;border:1px solid #334155">
+            <i class="ti ti-git-branch" style="color:#E11D48;font-size:18px"></i>
+          </div>
+          <div class="rec-carto-title" id="rec-carto-title">Cartographie</div>
+          <button class="rec-btn-new" onclick="recOpenEditFromCarto()" style="margin-right:8px">
+            <i class="ti ti-edit" style="font-size:13px"></i> Modifier
+          </button>
+          <button class="rec-carto-close" onclick="recCloseCarto()"><i class="ti ti-x"></i></button>
+        </div>
+        <div class="rec-carto-canvas" id="rec-carto-canvas"></div>
+      </div>
+
+      <!-- MAIN CONTENT -->
+      <div id="rec-main" style="display:none">
+        <div class="rec-wrap">
+          <div class="rec-header-card">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="width:44px;height:44px;background:#FFF1F2;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <i class="ti ti-shield-lock" style="color:#E11D48;font-size:20px"></i>
+              </div>
+              <div>
+                <div style="font-size:17px;font-weight:700;color:#0F172A">Suivi Recouvrement</div>
+                <div style="font-size:13px;color:#64748B">Gestion des projets de communication de recouvrement</div>
+              </div>
+              <button class="rec-btn-new" onclick="recStartNewProject()" style="margin-left:auto">
+                <i class="ti ti-plus" style="font-size:14px"></i> Nouveau projet
+              </button>
+            </div>
+          </div>
+          <div class="rec-projects-grid" id="rec-projects-list"></div>
+          <div id="rec-empty" class="rec-empty" style="display:none">
+            <i class="ti ti-folder-off" style="font-size:32px;display:block;margin-bottom:8px"></i>
+            Aucun projet pour l'instant.<br>Crée ton premier projet de recouvrement !
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL ÉTAPE 1 : NOM DU PROJET -->
+      <div id="rec-modal-step1" class="rec-modal-overlay" style="display:none">
+        <div class="rec-modal-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+            <h3 style="font-size:16px;font-weight:700;color:#0F172A">Nouveau projet</h3>
+            <button onclick="recCloseAll()" style="background:none;border:none;cursor:pointer;color:#64748B;font-size:20px"><i class="ti ti-x"></i></button>
+          </div>
+          <div class="rec-step-indicator">
+            <div class="rec-step-dot active">1</div>
+            <div class="rec-step-line"></div>
+            <div class="rec-step-dot inactive">2</div>
+          </div>
+          <div class="rec-field">
+            <label>Nom du projet *</label>
+            <input type="text" id="rec-s1-nom" placeholder="ex : Relance impayés Juin 2026" maxlength="80" />
+          </div>
+          <div class="rec-field">
+            <label>Élément déclencheur</label>
+            <input type="text" id="rec-s1-declencheur" placeholder="ex : Facture impayée à J+15" maxlength="200" />
+          </div>
+          <div class="rec-field">
+            <label>Contexte / Notes</label>
+            <textarea id="rec-s1-notes" placeholder="Contexte du projet, objectifs, remarques..." rows="3" maxlength="1000"></textarea>
+          </div>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+            <button class="rec-btn-cancel" onclick="recCloseAll()">Annuler</button>
+            <button class="rec-btn-next" onclick="recGoStep2()">
+              Suivant — Ajouter les coms <i class="ti ti-arrow-right" style="font-size:14px"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL ÉTAPE 2 : COMS -->
+      <div id="rec-modal-step2" class="rec-modal-overlay" style="display:none">
+        <div class="rec-modal-card wide">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+            <h3 style="font-size:16px;font-weight:700;color:#0F172A" id="rec-s2-title">Communications</h3>
+            <button onclick="recCloseAll()" style="background:none;border:none;cursor:pointer;color:#64748B;font-size:20px"><i class="ti ti-x"></i></button>
+          </div>
+          <div class="rec-step-indicator">
+            <div class="rec-step-dot done"><i class="ti ti-check" style="font-size:11px"></i></div>
+            <div class="rec-step-line done"></div>
+            <div class="rec-step-dot active">2</div>
+          </div>
+          <div id="rec-coms-editor"></div>
+          <button class="rec-btn-add-com" onclick="recAddCom()">
+            <i class="ti ti-plus" style="font-size:13px"></i> Ajouter une communication
+          </button>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">
+            <button class="rec-btn-cancel" onclick="recBackStep1()"><i class="ti ti-arrow-left" style="font-size:13px"></i> Retour</button>
+            <button class="rec-btn-save" onclick="recSaveProject()"><i class="ti ti-check" style="font-size:14px"></i> Créer le projet</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
   </div><!-- /main-content -->
 </div><!-- /app-shell -->
 
@@ -1421,7 +1822,7 @@ function renderProfileChips() {
 /* ══════════════════════════════════════════
    NAVIGATION
 ══════════════════════════════════════════ */
-const PAGE_TITLES = { home: 'Accueil', checklist: 'Checklist Dartagnan', process: 'Process HTML Salesforce', newsletter: 'Newsletter Équipe' };
+const PAGE_TITLES = { home: 'Accueil', checklist: 'Checklist Dartagnan', process: 'Process HTML Salesforce', newsletter: 'Newsletter Équipe', recouvrement: 'Suivi Recouvrement' };
 
 function navigate(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1433,6 +1834,7 @@ function navigate(id) {
   if (id === 'checklist') renderHistory();
   if (id === 'process') renderProcess();
   if (id === 'newsletter') nlInit();
+  if (id === 'recouvrement') recRenderProjects();
   if (currentEmailId && id !== 'checklist') {
     const state = collectState();
     saveEmailState(currentEmailId, state, openSections);
@@ -2688,6 +3090,427 @@ function escHtml(str) {
   if (!str) return '';
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+/* ══════════════════════════════════════════
+   SUIVI RECOUVREMENT
+══════════════════════════════════════════ */
+const REC_CODE = '3003';
+const REC_STORAGE_KEY = 'rec_projects';
+const REC_UNLOCKED_KEY = 'rec_unlocked';
+let recEditId = null;
+let recComs = [];
+let recCurrentCartoId = null;
+let recStep1Data = {};
+
+function navigateRecouvrement() {
+  navigate('recouvrement');
+  if (sessionStorage.getItem(REC_UNLOCKED_KEY) === '1') {
+    recShowMain();
+  } else {
+    recShowLock();
+  }
+}
+
+function recShowLock() {
+  document.getElementById('rec-lock-screen').style.display = 'flex';
+  document.getElementById('rec-main').style.display = 'none';
+  ['rd0','rd1','rd2','rd3'].forEach(id => {
+    document.getElementById(id).value = '';
+    document.getElementById(id).classList.remove('error');
+  });
+  document.getElementById('rec-code-error').style.display = 'none';
+  setTimeout(() => document.getElementById('rd0').focus(), 100);
+}
+
+function recShowMain() {
+  document.getElementById('rec-lock-screen').style.display = 'none';
+  document.getElementById('rec-main').style.display = 'block';
+  recRenderProjects();
+}
+
+function recDigit(idx) {
+  const val = document.getElementById('rd'+idx).value;
+  if (val && idx < 3) document.getElementById('rd'+(idx+1)).focus();
+  if (idx === 3 && val) recCheckCode();
+}
+
+function recKey(e, idx) {
+  if (e.key === 'Backspace' && !document.getElementById('rd'+idx).value && idx > 0) {
+    document.getElementById('rd'+(idx-1)).focus();
+  }
+  if (e.key === 'Enter') recCheckCode();
+}
+
+function recCheckCode() {
+  const code = ['rd0','rd1','rd2','rd3'].map(id => document.getElementById(id).value).join('');
+  if (code === REC_CODE) {
+    sessionStorage.setItem(REC_UNLOCKED_KEY, '1');
+    document.getElementById('rec-code-error').style.display = 'none';
+    recShowMain();
+  } else {
+    document.getElementById('rec-code-error').style.display = 'block';
+    ['rd0','rd1','rd2','rd3'].forEach(id => {
+      document.getElementById(id).classList.add('error');
+      setTimeout(() => document.getElementById(id).classList.remove('error'), 400);
+      setTimeout(() => { document.getElementById(id).value = ''; }, 400);
+    });
+    setTimeout(() => document.getElementById('rd0').focus(), 450);
+  }
+}
+
+/* ── STORAGE ── */
+function recGetProjects() {
+  try { return JSON.parse(localStorage.getItem(REC_STORAGE_KEY) || '[]'); }
+  catch(e) { return []; }
+}
+function recSaveProjects(projects) {
+  localStorage.setItem(REC_STORAGE_KEY, JSON.stringify(projects));
+}
+
+/* ── RENDER PROJECTS LIST ── */
+function recRenderProjects() {
+  if (sessionStorage.getItem(REC_UNLOCKED_KEY) !== '1') return;
+  const projects = recGetProjects();
+  const list = document.getElementById('rec-projects-list');
+  const empty = document.getElementById('rec-empty');
+  if (!projects.length) { list.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  list.innerHTML = projects.map(p => {
+    const date = new Date(p.createdAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
+    const decl = p.declencheur ? `<div class="rec-tag declencheur"><i class="ti ti-bolt" style="font-size:10px"></i>${escHtml(p.declencheur)}</div>` : '';
+    const notes = p.notes ? `<div class="rec-notes-text">${escHtml(p.notes.substring(0,120))}${p.notes.length>120?'…':''}</div>` : '';
+    const comCount = p.coms ? p.coms.length : 0;
+    return `<div class="rec-project-card">
+      <div class="rec-project-top">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+          <div>
+            <div class="rec-project-name">${escHtml(p.nom)}</div>
+            <div class="rec-project-date">${date}</div>
+          </div>
+          <div class="rec-project-actions">
+            <button class="rec-action-btn" onclick="recEditProject('${p.id}')" title="Modifier"><i class="ti ti-edit"></i></button>
+            <button class="rec-action-btn delete" onclick="recDeleteProject('${p.id}')" title="Supprimer"><i class="ti ti-trash"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="rec-project-body">
+        ${decl}${notes}
+        <div class="rec-com-count"><i class="ti ti-mail" style="font-size:12px"></i>${comCount} communication${comCount>1?'s':''}</div>
+      </div>
+      <button class="rec-btn-view-map" onclick="recOpenCarto('${p.id}')">
+        <i class="ti ti-git-branch" style="font-size:13px"></i> Voir la cartographie
+      </button>
+    </div>`;
+  }).join('');
+}
+
+/* ── STEP 1 : NOM DU PROJET ── */
+function recStartNewProject() {
+  recEditId = null;
+  recComs = [];
+  recStep1Data = {};
+  document.getElementById('rec-s1-nom').value = '';
+  document.getElementById('rec-s1-declencheur').value = '';
+  document.getElementById('rec-s1-notes').value = '';
+  document.getElementById('rec-modal-step1').style.display = 'flex';
+  setTimeout(() => document.getElementById('rec-s1-nom').focus(), 100);
+}
+
+function recGoStep2() {
+  const nom = document.getElementById('rec-s1-nom').value.trim();
+  if (!nom) { document.getElementById('rec-s1-nom').focus(); return; }
+  recStep1Data = {
+    nom,
+    declencheur: document.getElementById('rec-s1-declencheur').value.trim(),
+    notes: document.getElementById('rec-s1-notes').value.trim()
+  };
+  document.getElementById('rec-s2-title').textContent = `Communications — ${nom}`;
+  document.getElementById('rec-modal-step1').style.display = 'none';
+  document.getElementById('rec-modal-step2').style.display = 'flex';
+  recRenderComsEditor();
+}
+
+function recBackStep1() {
+  document.getElementById('rec-modal-step2').style.display = 'none';
+  document.getElementById('rec-modal-step1').style.display = 'flex';
+}
+
+function recCloseAll() {
+  document.getElementById('rec-modal-step1').style.display = 'none';
+  document.getElementById('rec-modal-step2').style.display = 'none';
+}
+
+/* ── EDIT PROJECT ── */
+function recEditProject(id) {
+  const projects = recGetProjects();
+  const p = projects.find(x => x.id === id);
+  if (!p) return;
+  recEditId = id;
+  recComs = p.coms ? p.coms.map(c => ({...c, links: c.links ? [...c.links] : []})) : [];
+  recStep1Data = { nom: p.nom, declencheur: p.declencheur || '', notes: p.notes || '' };
+  document.getElementById('rec-s1-nom').value = p.nom;
+  document.getElementById('rec-s1-declencheur').value = p.declencheur || '';
+  document.getElementById('rec-s1-notes').value = p.notes || '';
+  document.getElementById('rec-s2-title').textContent = `Communications — ${p.nom}`;
+  document.getElementById('rec-modal-step1').style.display = 'none';
+  document.getElementById('rec-modal-step2').style.display = 'flex';
+  recRenderComsEditor();
+}
+
+function recOpenEditFromCarto() {
+  if (!recCurrentCartoId) return;
+  recCloseCarto();
+  recEditProject(recCurrentCartoId);
+}
+
+/* ── COMS EDITOR ── */
+function recAddCom() {
+  recComs.push({ id: 'com_'+Date.now(), titre: '', description: '', declencheur: '', lien: '', linked: false, linkedTo: [] });
+  recRenderComsEditor();
+}
+
+function recDelCom(idx) {
+  const delId = recComs[idx].id;
+  recComs.splice(idx, 1);
+  // Cleanup links
+  recComs.forEach(c => { if (c.linkedTo) c.linkedTo = c.linkedTo.filter(lid => lid !== delId); });
+  recRenderComsEditor();
+}
+
+function recComField(idx, field, val) {
+  if (recComs[idx]) recComs[idx][field] = val;
+}
+
+function recToggleLinked(idx) {
+  recComs[idx].linked = !recComs[idx].linked;
+  recRenderComsEditor();
+}
+
+function recToggleLink(fromIdx, toId) {
+  const com = recComs[fromIdx];
+  if (!com.linkedTo) com.linkedTo = [];
+  const i = com.linkedTo.indexOf(toId);
+  if (i > -1) com.linkedTo.splice(i, 1);
+  else com.linkedTo.push(toId);
+}
+
+function recRenderComsEditor() {
+  const container = document.getElementById('rec-coms-editor');
+  if (!recComs.length) {
+    container.innerHTML = '<div style="font-size:13px;color:#94A3B8;padding:10px 0;text-align:center">Aucune communication. Ajoutes-en une ci-dessous.</div>';
+    return;
+  }
+  container.innerHTML = recComs.map((c, i) => {
+    const otherComs = recComs.filter((_, j) => j !== i);
+    const linkedOptions = otherComs.map(oc => {
+      const checked = c.linkedTo && c.linkedTo.includes(oc.id) ? 'checked' : '';
+      const label = oc.titre || `Com ${recComs.indexOf(oc)+1}`;
+      return `<label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#4338CA;cursor:pointer;margin-bottom:4px">
+        <input type="checkbox" ${checked} onchange="recToggleLink(${i},'${oc.id}')" style="accent-color:#6366F1" />
+        ${escHtml(label)}
+      </label>`;
+    }).join('');
+
+    return `<div class="rec-com-item">
+      <div class="rec-com-item-header">
+        <div class="rec-com-num">${i+1}</div>
+        <input type="text" class="rec-com-item-title" placeholder="Nom de la communication (ex: Email relance J+15)"
+          value="${escHtml(c.titre)}" oninput="recComField(${i},'titre',this.value)"
+          style="border:none;background:none;font-size:13px;font-weight:700;color:#0F172A;flex:1;outline:none;padding:0;font-family:inherit" />
+        <button class="rec-btn-del-com" onclick="recDelCom(${i})"><i class="ti ti-trash" style="font-size:13px"></i></button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+        <div>
+          <div style="font-size:11px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px">Description</div>
+          <input type="text" placeholder="ex: Email automatique SFMC" value="${escHtml(c.description)}"
+            oninput="recComField(${i},'description',this.value)"
+            style="width:100%;padding:8px 10px;border:1px solid #E2E8F0;border-radius:8px;font-size:12px;font-family:inherit;outline:none;background:#fff" />
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px">Déclencheur</div>
+          <input type="text" placeholder="ex: Si pas de réponse à J+20" value="${escHtml(c.declencheur)}"
+            oninput="recComField(${i},'declencheur',this.value)"
+            style="width:100%;padding:8px 10px;border:1px solid #E2E8F0;border-radius:8px;font-size:12px;font-family:inherit;outline:none;background:#fff" />
+        </div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:11px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px">Lien (template, doc...)</div>
+        <input type="text" placeholder="https://..." value="${escHtml(c.lien)}"
+          oninput="recComField(${i},'lien',this.value)"
+          style="width:100%;padding:8px 10px;border:1px solid #E2E8F0;border-radius:8px;font-size:12px;font-family:inherit;outline:none;background:#fff" />
+      </div>
+      ${otherComs.length > 0 ? `
+      <div class="rec-link-toggle" onclick="recToggleLinked(${i})">
+        <input type="checkbox" ${c.linked ? 'checked' : ''} readonly onclick="event.stopPropagation();recToggleLinked(${i})" />
+        Cette com mène vers d'autres communications
+      </div>
+      ${c.linked ? `<div class="rec-com-link-section">
+        <div style="font-size:11px;font-weight:600;color:#5B21B6;margin-bottom:6px">Sélectionne les communications suivantes :</div>
+        ${linkedOptions}
+      </div>` : ''}
+      ` : ''}
+    </div>`;
+  }).join('');
+}
+
+/* ── SAVE PROJECT ── */
+function recSaveProject() {
+  const nom = recStep1Data.nom || document.getElementById('rec-s1-nom').value.trim();
+  if (!nom) return;
+  const projects = recGetProjects();
+  const projectData = {
+    nom,
+    declencheur: recStep1Data.declencheur || '',
+    notes: recStep1Data.notes || '',
+    coms: recComs,
+    updatedAt: Date.now()
+  };
+  if (recEditId) {
+    const idx = projects.findIndex(p => p.id === recEditId);
+    if (idx > -1) projects[idx] = { ...projects[idx], ...projectData };
+  } else {
+    projects.unshift({ id: 'rec_'+Date.now(), ...projectData, createdAt: Date.now() });
+  }
+  recSaveProjects(projects);
+  recCloseAll();
+  recRenderProjects();
+}
+
+/* ── DELETE ── */
+function recDeleteProject(id) {
+  if (!confirm('Supprimer ce projet définitivement ?')) return;
+  recSaveProjects(recGetProjects().filter(p => p.id !== id));
+  recRenderProjects();
+}
+
+/* ── CARTOGRAPHIE ── */
+function recOpenCarto(id) {
+  const projects = recGetProjects();
+  const p = projects.find(x => x.id === id);
+  if (!p) return;
+  recCurrentCartoId = id;
+  document.getElementById('rec-carto-title').textContent = p.nom;
+  document.getElementById('rec-carto-overlay').style.display = 'flex';
+  recRenderCarto(p);
+}
+
+function recCloseCarto() {
+  document.getElementById('rec-carto-overlay').style.display = 'none';
+  recCurrentCartoId = null;
+}
+
+function recRenderCarto(p) {
+  const canvas = document.getElementById('rec-carto-canvas');
+  canvas.innerHTML = '';
+  if (!p.coms || !p.coms.length) {
+    canvas.innerHTML = '<div style="color:#64748B;font-size:14px;text-align:center;margin-top:60px">Aucune communication dans ce projet.</div>';
+    return;
+  }
+
+  // Build adjacency: comId -> [comId]
+  const comMap = {};
+  p.coms.forEach(c => { comMap[c.id] = c; });
+
+  // Layout: Com1 toujours en haut, dans l'ordre de création
+  const NODE_W = 220, NODE_H = 110, H_GAP = 60, V_GAP = 80;
+  const positions = {};
+  p.coms.forEach((c, i) => {
+    positions[c.id] = { x: 0, y: i * (NODE_H + V_GAP) };
+  });
+
+  const svgW = NODE_W + 80;
+  const svgH = p.coms.length * (NODE_H + V_GAP) + 80;
+
+  // Build container
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = `position:relative;width:${svgW}px;height:${svgH}px;`;
+
+  // SVG for arrows
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('width', svgW);
+  svg.setAttribute('height', svgH);
+  svg.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;overflow:visible';
+
+  // Defs for arrowhead
+  const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+  defs.innerHTML = `<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="#7C3AED" />
+  </marker>`;
+  svg.appendChild(defs);
+
+  // Draw arrows: c points TO tid, arrow from c (top) down to tid (bottom)
+  p.coms.forEach(c => {
+    if (!c.linked || !c.linkedTo) return;
+    c.linkedTo.forEach(tid => {
+      if (!positions[c.id] || !positions[tid]) return;
+      const from = positions[c.id];
+      const to = positions[tid];
+      const x1 = from.x + NODE_W/2, y1 = from.y + NODE_H;
+      const x2 = to.x + NODE_W/2, y2 = to.y;
+      const midY = (y1 + y2) / 2;
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', `M${x1},${y1} C${x1},${midY} ${x2},${midY} ${x2},${y2}`);
+      path.setAttribute('stroke', '#7C3AED');
+      path.setAttribute('stroke-width', '2');
+      path.setAttribute('fill', 'none');
+      path.setAttribute('marker-end', 'url(#arrowhead)');
+      svg.appendChild(path);
+      const condText = comMap[tid] && comMap[tid].declencheur;
+      if (condText) {
+        const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        txt.setAttribute('x', (x1+x2)/2 + 6);
+        txt.setAttribute('y', midY - 4);
+        txt.setAttribute('class', 'rec-arrow-label');
+        txt.textContent = condText.length > 30 ? condText.substring(0,30)+'…' : condText;
+        svg.appendChild(txt);
+      }
+    });
+  });
+
+  wrapper.appendChild(svg);
+
+  // Draw nodes
+  p.coms.forEach((c, idx) => {
+    if (!positions[c.id]) return;
+    const pos = positions[c.id];
+    const originalIdx = p.coms.findIndex(x => x.id === c.id);
+    const node = document.createElement('div');
+    node.className = 'rec-node';
+    node.style.cssText = `position:absolute;left:${pos.x}px;top:${pos.y}px;width:${NODE_W}px;`;
+    const badge = `<div class="rec-node-badge com">Com ${originalIdx+1}</div>`;
+    const title = `<div class="rec-node-title">${escHtml(c.titre || '(sans titre)')}</div>`;
+    const desc = c.description ? `<div class="rec-node-desc">${escHtml(c.description)}</div>` : '';
+    const lien = c.lien ? `<a href="${escHtml(c.lien)}" target="_blank" class="rec-node-link"><i class="ti ti-link" style="font-size:10px"></i>${escHtml(c.lien.length>35?c.lien.substring(0,35)+'…':c.lien)}</a>` : '';
+    node.innerHTML = badge + title + desc + lien;
+    wrapper.appendChild(node);
+  });
+
+  // Trigger node (if declencheur)
+  if (p.declencheur) {
+    const trigNode = document.createElement('div');
+    trigNode.className = 'rec-node trigger-node';
+    const fpos = positions[p.coms[0].id];
+    trigNode.style.cssText = `position:absolute;left:${fpos.x}px;top:${-NODE_H - V_GAP}px;width:${NODE_W}px;`;
+    trigNode.innerHTML = `<div class="rec-node-badge trigger"><i class="ti ti-bolt" style="font-size:10px"></i> Déclencheur</div>
+      <div class="rec-node-title">${escHtml(p.declencheur)}</div>`;
+    wrapper.appendChild(trigNode);
+
+    // Arrow from trigger to first root
+    const tx = fpos.x + NODE_W/2, ty = -V_GAP/2;
+    const fx = fpos.x + NODE_W/2, fy = 0;
+    const trig_path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    trig_path.setAttribute('d', `M${tx},${ty} L${fx},${fy}`);
+    trig_path.setAttribute('stroke', '#F59E0B');
+    trig_path.setAttribute('stroke-width', '2');
+    trig_path.setAttribute('fill', 'none');
+    trig_path.setAttribute('marker-end', 'url(#arrowhead)');
+    svg.appendChild(trig_path);
+
+    wrapper.style.marginTop = `${NODE_H + V_GAP}px`;
+  }
+
+  canvas.appendChild(wrapper);
+}
+
 </script>
 </body>
 </html>
