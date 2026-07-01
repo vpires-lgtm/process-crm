@@ -1304,6 +1304,11 @@
       Perso Email Enseignes
     </div>
 
+    <div class="nav-item" id="nav-correction" onclick="navigate('correction')">
+      <i class="ti ti-mail-check"></i>
+      Correction Email
+    </div>
+
     <div class="nav-item" id="nav-recouvrement" onclick="navigateRecouvrement()">
       <i class="ti ti-shield-lock"></i>
       Suivi Recouvrement
@@ -1372,6 +1377,14 @@
             <h3>Perso Email Enseignes</h3>
             <p>Ajoute l'AMPscript de personnalisation enseigne (visuel, nom de carte, IOBSP) sur tes emails PMR et RUN.</p>
             <div class="card-arrow" style="color:#059669">Ouvrir <i class="ti ti-arrow-right" style="font-size:13px"></i></div>
+          </div>
+          <div class="tool-card" onclick="navigate('correction')">
+            <div class="tool-card-icon" style="background:#FFEDD5">
+              <i class="ti ti-mail-check" style="color:#EA580C;font-size:22px"></i>
+            </div>
+            <h3>Correction Email</h3>
+            <p>Note les remarques de tes collègues et traite-les une par une, comme une checklist.</p>
+            <div class="card-arrow" style="color:#EA580C">Ouvrir <i class="ti ti-arrow-right" style="font-size:13px"></i></div>
           </div>
           <div class="tool-card" onclick="navigateRecouvrement()">
             <div class="tool-card-icon" style="background:#FFF1F2">
@@ -1633,6 +1646,57 @@
         </div>
       </div>
 
+    </div>
+
+    <!-- PAGE CORRECTION EMAIL -->
+    <div class="page" id="page-correction">
+
+      <!-- SCREEN START CORRECTION -->
+      <div class="cl-screen active" id="correction-screen-start">
+        <div class="checklist-start-card">
+          <h2><i class="ti ti-plus"></i> Nouvelle correction</h2>
+          <div class="input-row">
+            <input type="text" id="correctionEmailInput" placeholder="ex : NL_Promo_Juin_2026" />
+            <button class="btn-start" onclick="startCorrection()">
+              <i class="ti ti-player-play" style="font-size:14px"></i> Démarrer
+            </button>
+          </div>
+        </div>
+        <div class="section-label">Historique</div>
+        <div id="correctionHistoryList"></div>
+      </div>
+
+      <!-- SCREEN CORRECTION (remarques) -->
+      <div class="cl-screen" id="correction-screen-process">
+        <div class="cl-topbar">
+          <div>
+            <h2 id="correctionEmailTitle"></h2>
+            <p id="correctionEmailSub"></p>
+          </div>
+          <div class="cl-actions">
+            <button class="btn-ghost" onclick="backToCorrectionStart()"><i class="ti ti-arrow-left" style="font-size:14px"></i> Retour</button>
+            <button class="btn-del-ghost" onclick="askDeleteCorrection(currentCorrectionId)"><i class="ti ti-trash" style="font-size:14px"></i></button>
+          </div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-meta">
+            <span id="correctionPLabel">0 remarque</span>
+            <span class="progress-pct" id="correctionPPct">0%</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="correctionPFill" style="width:0%;background:#EA580C"></div></div>
+        </div>
+
+        <div class="section-block">
+          <div class="items-list edit-mode-on" id="correctionTasksList"></div>
+        </div>
+
+        <div id="correctionDoneBanner" class="done-banner" style="display:none">
+          <i class="ti ti-circle-check done-icon"></i>
+          <h3 id="correctionDoneTitle"></h3>
+          <p>Toutes les remarques ont été traitées — l'email est corrigé !</p>
+          <button class="btn-primary" onclick="backToCorrectionStart()"><i class="ti ti-home" style="font-size:14px"></i> Retour à la liste</button>
+        </div>
+      </div>
     </div>
 
     <!-- PAGE NEWSLETTER -->
@@ -1904,6 +1968,19 @@
   </div>
 </div>
 
+<!-- MODAL CORRECTION -->
+<div class="modal-overlay" id="confirmCorrectionModal">
+  <div class="modal">
+    <i class="ti ti-trash"></i>
+    <h3>Supprimer cette correction ?</h3>
+    <p>Toutes les remarques associées seront définitivement perdues.</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeCorrectionModal()">Annuler</button>
+      <button class="btn-confirm-del" onclick="confirmDeleteCorrection()">Supprimer</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ══════════════════════════════════════════
    MULTI-USER AUTH & STORAGE
@@ -1988,7 +2065,7 @@ function renderProfileChips() {
 /* ══════════════════════════════════════════
    NAVIGATION
 ══════════════════════════════════════════ */
-const PAGE_TITLES = { home: 'Accueil', checklist: 'Checklist Dartagnan', process: 'Process HTML Salesforce', tuto: 'Paramétrage SFMC & BAT', perso: 'Perso Email Enseignes', newsletter: 'Newsletter Équipe', recouvrement: 'Suivi Recouvrement' };
+const PAGE_TITLES = { home: 'Accueil', checklist: 'Checklist Dartagnan', process: 'Process HTML Salesforce', tuto: 'Paramétrage SFMC & BAT', perso: 'Perso Email Enseignes', correction: 'Correction Email', newsletter: 'Newsletter Équipe', recouvrement: 'Suivi Recouvrement' };
 
 function navigate(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -2001,6 +2078,7 @@ function navigate(id) {
   if (id === 'process') renderProcess();
   if (id === 'tuto') renderTuto();
   if (id === 'perso') renderPerso();
+  if (id === 'correction') renderCorrection();
   if (id === 'newsletter') nlInit();
   if (id === 'recouvrement') recRenderProjects();
   if (currentEmailId && id !== 'checklist') {
@@ -3778,6 +3856,218 @@ function updatePersoNotesUI(val) {
   hint.textContent = n>0 ? val.trim().substring(0,40)+(val.trim().length>40?'…':'') : 'Ajouter une note…';
   hint.style.color = n>0 ? '#475569' : '#94A3B8';
   chars.textContent = n+' caractère'+(n>1?'s':'');
+}
+
+/* ══════════════════════════════════════════
+   CORRECTION EMAIL — remarques dynamiques
+══════════════════════════════════════════ */
+let currentCorrectionId = null;
+let pendingDeleteCorrectionId = null;
+
+/* ── STORAGE ── */
+function getCorrectionEmails() {
+  if (!currentUser) return [];
+  try { return JSON.parse(localStorage.getItem('dartagnan_correction_emails_'+currentUser.id)) || []; }
+  catch(e) { return []; }
+}
+function saveCorrectionEmails(emails) {
+  if (!currentUser) return;
+  localStorage.setItem('dartagnan_correction_emails_'+currentUser.id, JSON.stringify(emails));
+}
+function getCorrectionData(id) {
+  if (!currentUser) return { tasks: [] };
+  try { return JSON.parse(localStorage.getItem('dartagnan_correction_data_'+currentUser.id+'_'+id)) || { tasks: [] }; }
+  catch(e) { return { tasks: [] }; }
+}
+function saveCorrectionData(id, data) {
+  if (!currentUser) return;
+  localStorage.setItem('dartagnan_correction_data_'+currentUser.id+'_'+id, JSON.stringify(data));
+}
+function deleteCorrectionData(id) {
+  if (!currentUser) return;
+  localStorage.removeItem('dartagnan_correction_data_'+currentUser.id+'_'+id);
+}
+function createCorrectionEmail(name) {
+  const emails = getCorrectionEmails();
+  const id = 'correction_' + Date.now();
+  emails.unshift({ id, name, createdAt: Date.now(), updatedAt: Date.now(), done: 0, total: 0 });
+  saveCorrectionEmails(emails);
+  return id;
+}
+
+/* ── START SCREEN ── */
+document.getElementById('correctionEmailInput').addEventListener('keydown', e => { if(e.key==='Enter') startCorrection(); });
+
+function startCorrection() {
+  const name = document.getElementById('correctionEmailInput').value.trim();
+  if (!name) return document.getElementById('correctionEmailInput').focus();
+  const id = createCorrectionEmail(name);
+  openCorrection(id);
+  document.getElementById('correctionEmailInput').value = '';
+}
+
+function openCorrection(id) {
+  currentCorrectionId = id;
+  const emails = getCorrectionEmails();
+  const email = emails.find(e => e.id === id);
+  if (!email) return;
+
+  document.getElementById('correctionEmailTitle').textContent = email.name;
+  document.getElementById('correctionEmailSub').textContent = 'Démarré le ' + new Date(email.createdAt).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+
+  document.getElementById('correction-screen-start').classList.remove('active');
+  document.getElementById('correction-screen-process').classList.add('active');
+
+  renderCorrectionTasks();
+}
+
+function backToCorrectionStart() {
+  currentCorrectionId = null;
+  document.getElementById('correction-screen-process').classList.remove('active');
+  document.getElementById('correction-screen-start').classList.add('active');
+  renderCorrectionHistory();
+}
+
+/* ── TASKS (remarques) ── */
+function renderCorrectionTasks() {
+  const data = getCorrectionData(currentCorrectionId);
+  const tasks = data.tasks || [];
+  const root = document.getElementById('correctionTasksList');
+
+  let html = '';
+  if (!tasks.length) {
+    html += `<div class="history-empty" style="border:none;padding:1.5rem 0"><i class="ti ti-message-2"></i>Aucune remarque pour l'instant — ajoute la première ci-dessous.</div>`;
+  } else {
+    tasks.forEach(t => {
+      html += `<div class="item-row${t.done?' checked':''}" onclick="toggleCorrectionTask('${t.id}')">
+        <div class="checkbox">${t.done?'<i class="ti ti-check" style="font-size:12px;color:#fff"></i>':''}</div>
+        <span class="item-label">${t.text}</span>
+        <button class="item-del-btn" onclick="event.stopPropagation();deleteCorrectionTask('${t.id}')" title="Supprimer"><i class="ti ti-trash" style="font-size:14px"></i></button>
+      </div>`;
+    });
+  }
+  html += `<div class="add-task-row">
+    <input class="add-task-input" id="correctionTaskInput" placeholder="Ajouter une remarque…" onkeydown="if(event.key==='Enter')addCorrectionTask()" />
+    <button class="btn-add-task" style="background:#EA580C" onclick="addCorrectionTask()"><i class="ti ti-plus" style="font-size:13px"></i> Ajouter</button>
+  </div>`;
+  root.innerHTML = html;
+
+  updateCorrectionProgress();
+}
+
+function addCorrectionTask() {
+  const input = document.getElementById('correctionTaskInput');
+  const text = input.value.trim();
+  if (!text) { input.focus(); return; }
+  const data = getCorrectionData(currentCorrectionId);
+  if (!data.tasks) data.tasks = [];
+  data.tasks.push({ id: 'task_'+Date.now()+'_'+Math.random().toString(36).slice(2,7), text, done: false, createdAt: Date.now() });
+  saveCorrectionData(currentCorrectionId, data);
+  syncCorrectionEmailMeta(data);
+  renderCorrectionTasks();
+  // Garde le focus pour enchaîner l'ajout des remarques
+  setTimeout(() => { const i = document.getElementById('correctionTaskInput'); if (i) i.focus(); }, 0);
+}
+
+function toggleCorrectionTask(taskId) {
+  const data = getCorrectionData(currentCorrectionId);
+  const task = (data.tasks || []).find(t => t.id === taskId);
+  if (!task) return;
+  task.done = !task.done;
+  saveCorrectionData(currentCorrectionId, data);
+  syncCorrectionEmailMeta(data);
+  renderCorrectionTasks();
+}
+
+function deleteCorrectionTask(taskId) {
+  const data = getCorrectionData(currentCorrectionId);
+  data.tasks = (data.tasks || []).filter(t => t.id !== taskId);
+  saveCorrectionData(currentCorrectionId, data);
+  syncCorrectionEmailMeta(data);
+  renderCorrectionTasks();
+}
+
+function syncCorrectionEmailMeta(data) {
+  const emails = getCorrectionEmails();
+  const email = emails.find(e => e.id === currentCorrectionId);
+  if (!email) return;
+  const tasks = data.tasks || [];
+  email.done = tasks.filter(t => t.done).length;
+  email.total = tasks.length;
+  email.updatedAt = Date.now();
+  saveCorrectionEmails(emails);
+}
+
+function updateCorrectionProgress() {
+  const data = getCorrectionData(currentCorrectionId);
+  const tasks = data.tasks || [];
+  const done = tasks.filter(t => t.done).length;
+  const total = tasks.length;
+  const pct = total > 0 ? Math.round(done/total*100) : 0;
+  document.getElementById('correctionPFill').style.width = pct + '%';
+  document.getElementById('correctionPLabel').textContent = total > 0 ? (done + ' / ' + total + ' remarque' + (total>1?'s':'')) : 'Aucune remarque';
+  document.getElementById('correctionPPct').textContent = pct + '%';
+  const banner = document.getElementById('correctionDoneBanner');
+  if (total > 0 && done === total) {
+    banner.style.display = 'block';
+    document.getElementById('correctionDoneTitle').textContent = '"' + document.getElementById('correctionEmailTitle').textContent + '" est corrigé !';
+  } else {
+    banner.style.display = 'none';
+  }
+}
+
+/* ── HISTORY ── */
+function renderCorrectionHistory() {
+  const emails = getCorrectionEmails();
+  const list = document.getElementById('correctionHistoryList');
+  if (!emails.length) {
+    list.innerHTML = `<div class="history-empty"><i class="ti ti-inbox"></i>Aucune correction pour l'instant — commence par en créer une !</div>`;
+    return;
+  }
+  const CIRC = 2*Math.PI*17;
+  list.innerHTML = emails.map(email => {
+    const total = email.total || 0;
+    const done = email.done || 0;
+    const pct = total > 0 ? Math.round(done/total*100) : 0;
+    const offset = CIRC - (total > 0 ? (done/total) : 0)*CIRC;
+    const isDone = total > 0 && done === total;
+    const date = new Date(email.updatedAt).toLocaleDateString('fr-FR',{day:'numeric',month:'short'});
+    return `<div class="history-item${isDone?' done-item':''}" onclick="openCorrection('${email.id}')">
+      <div class="history-ring${isDone?' done-ring':''}">
+        <svg width="44" height="44" viewBox="0 0 44 44"><circle class="ring-bg" cx="22" cy="22" r="17"/><circle class="ring-fill" cx="22" cy="22" r="17" stroke-dasharray="${CIRC.toFixed(1)}" stroke-dashoffset="${offset.toFixed(1)}"/></svg>
+        <div class="ring-label">${pct}%</div>
+      </div>
+      <div class="history-info">
+        <div class="history-name">${email.name}</div>
+        <div class="history-meta">${total > 0 ? (done+'/'+total+' remarques') : 'Aucune remarque'} · ${date}</div>
+      </div>
+      <span class="history-status ${isDone?'completed':'in-progress'}">${isDone?'Terminé':'En cours'}</span>
+      <button class="btn-del-sm" onclick="event.stopPropagation();askDeleteCorrection('${email.id}')"><i class="ti ti-trash"></i></button>
+    </div>`;
+  }).join('');
+}
+
+function askDeleteCorrection(id) { pendingDeleteCorrectionId = id; document.getElementById('confirmCorrectionModal').classList.add('open'); }
+function closeCorrectionModal() { pendingDeleteCorrectionId = null; document.getElementById('confirmCorrectionModal').classList.remove('open'); }
+function confirmDeleteCorrection() {
+  if (!pendingDeleteCorrectionId) return;
+  const emails = getCorrectionEmails().filter(e => e.id !== pendingDeleteCorrectionId);
+  saveCorrectionEmails(emails);
+  deleteCorrectionData(pendingDeleteCorrectionId);
+  if (pendingDeleteCorrectionId === currentCorrectionId) {
+    currentCorrectionId = null;
+    document.getElementById('correction-screen-process').classList.remove('active');
+    document.getElementById('correction-screen-start').classList.add('active');
+  }
+  closeCorrectionModal();
+  renderCorrectionHistory();
+}
+
+function renderCorrection() {
+  document.getElementById('correction-screen-start').classList.add('active');
+  document.getElementById('correction-screen-process').classList.remove('active');
+  currentCorrectionId = null;
+  renderCorrectionHistory();
 }
 
 /* Legacy stubs */
